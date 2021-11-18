@@ -10,8 +10,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class BoardView  extends View {
-
+public class BoardView extends View {
     public static final int GRID_WIDTH = 6;
     private Bitmap mHumanBitmap;
     private Bitmap mComputerBitmap;
@@ -31,9 +30,8 @@ public class BoardView  extends View {
     }
 
     public void initialize() {
-
-        mHumanBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ximg);
-        mComputerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.oimg);
+        mHumanBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.oimg);
+        mComputerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ximg);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
@@ -83,7 +81,6 @@ public class BoardView  extends View {
             }
         }
     }
-
 
 
 
