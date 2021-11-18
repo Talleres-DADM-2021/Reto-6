@@ -11,6 +11,16 @@ import java.util.Random;
 
 public class TicTacToeGame {
 
+    public char getBoardOccupant(int pos){
+        if(mBoard[pos]==HUMAN_PLAYER){
+            return 'X';
+        }else if(mBoard[pos]==COMPUTER_PLAYER){
+            return 'O';
+        }else{
+            return 'N';
+        }
+    }
+
     // The computer's difficulty levels
     public enum DifficultyLevel {Easy, Harder, Expert};
 
@@ -53,18 +63,18 @@ public class TicTacToeGame {
     }
     /** Set the given player at the given location on the game board.
      * The location must be available, or the board will not be changed.
-     *
-     * @param player - The HUMAN_PLAYER or COMPUTER_PLAYER
+     *  @param player - The HUMAN_PLAYER or COMPUTER_PLAYER
      * @param location - The location (0-8) to place the move
+     * @return
      */
-    public void setMove(char player, int location){
-
-        if(
-                mBoard[location]==OPEN_SPOT
-        ){
-            mBoard[location]=player;
+    public boolean setMove(char player, int location) {
+        if (mBoard[location] == OPEN_SPOT) {
+            mBoard[location] = player;
+            return true;
         }
+        return false;
     }
+
     /** Return the best move for the computer to make. You must call setMove()
      * to actually make the computer move to that location.
      * @return The best move for the computer to make (0-8).
