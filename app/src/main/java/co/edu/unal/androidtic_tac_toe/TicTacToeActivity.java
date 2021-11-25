@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +33,9 @@ public class TicTacToeActivity extends AppCompatActivity {
     static final int DIALOG_DIFFICULTY_ID = 0;
     static final int DIALOG_QUIT_ID = 1;
     private BoardView mBoardView;
+    private SharedPreferences mPrefs;
+
+
 
     MediaPlayer mHumanMediaPlayer;
     MediaPlayer mComputerMediaPlayer;
@@ -56,8 +61,19 @@ public class TicTacToeActivity extends AppCompatActivity {
             case R.id.quit:
                 showDialog(DIALOG_QUIT_ID);
                 return true;
+            case R.id.reset_scores:
+                ResetScores();
+                return true;
         }
         return false;
+    }
+
+    private void ResetScores(){
+        humanSc = 0;
+        androidScore = 0;
+        empateScore = 0;
+        startNewGame();
+        displayScores();
     }
 
     @Override
@@ -148,7 +164,62 @@ public class TicTacToeActivity extends AppCompatActivity {
         humanStarts=true;
         toast = Toast.makeText(this,"",Toast.LENGTH_SHORT);
         selected = 0;
-        startNewGame();
+        mPrefs = getSharedPreferences("ttt_prefs", MODE_PRIVATE);
+
+        humanSc = mPrefs.getInt("mHumanWins", 0);
+        androidScore = mPrefs.getInt("mComputerWins", 0);
+        empateScore = mPrefs.getInt("mTies", 0);
+        if (savedInstanceState == null) {
+            startNewGame();
+        }
+        else {
+            onRestoreInstanceState(savedInstanceState);
+        }
+        displayScores();
+    }
+
+    private void displayScores() {
+        human.setText(Integer.toString(humanSc));
+        pcScore.setText(Integer.toString(androidScore));
+        empate.setText(Integer.toString(empateScore));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharArray("board", mGame.getmBoard());
+        outState.putBoolean("mGameOver", GameOver);
+        outState.putInt("mHumanWins", Integer.valueOf(humanSc));
+        outState.putInt("mComputerWins", Integer.valueOf(androidScore));
+        outState.putInt("mTies", Integer.valueOf(empateScore));
+        outState.putCharSequence("info", mInfoTextView.getText());
+        outState.putChar("mGoFirst", mGame.currentInitPlayer);
+        outState.putCharSequence("info", mInfoTextView.getText());
+        outState.putBoolean("turn", humanStarts);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mGame.setBoardState(savedInstanceState.getCharArray("board"));
+        GameOver = savedInstanceState.getBoolean("mGameOver");
+        mInfoTextView.setText(savedInstanceState.getCharSequence("info"));
+        humanSc = savedInstanceState.getInt("mHumanWins");
+        androidScore = savedInstanceState.getInt("mComputerWins");
+        empateScore = savedInstanceState.getInt("mTies");
+        humanStarts = savedInstanceState.getBoolean("turn");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+// Save the current scores
+        SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putInt("mHumanWins", humanSc);
+        ed.putInt("mComputerWins", androidScore);
+        ed.putInt("mTies", empateScore);
+        ed.commit();
     }
 
     private void startNewGame() {

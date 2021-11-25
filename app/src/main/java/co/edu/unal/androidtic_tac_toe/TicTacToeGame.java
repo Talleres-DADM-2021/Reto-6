@@ -20,7 +20,7 @@ public class TicTacToeGame {
     }
     private char mBoard[] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};
     public static final int BOARD_SIZE = 9;
-
+    public char currentInitPlayer;
     public static final char HUMAN_PLAYER = 'X';
     public static final char COMPUTER_PLAYER = 'O';
     public static final char OPEN_SPOT= ' ';
@@ -36,6 +36,17 @@ public class TicTacToeGame {
         mRand = new Random();
         char turn = HUMAN_PLAYER;    // Human starts first
         int  win = 0;
+    }
+
+    public char[] getmBoard() {
+        return mBoard;
+    }
+
+    public char[] setBoardState(char c[]){
+        for (int i = 0; i < c.length; i++) {
+            this.mBoard[i] = c[i];
+        }
+        return mBoard;
     }
 
     /** Clear the board of all X's and O's by setting all spots to OPEN_SPOT. */
