@@ -6,10 +6,10 @@
         android:icon="@drawable/hearts"
         app:showAsAction="always"
         />
-    <item android:id="@+id/reset_scores"
+    <item android:id="@+id/reset_scores" android:title="reset"
         android:icon="@drawable/reset"
         app:showAsAction="always"
-        android:title="reset" />
+         />
     <item android:id="@+id/ai_difficulty" android:title="Difficulty"  android:icon="@drawable/difficulty_level" />
     <item android:id="@+id/quit" android:title="Quit"
         android:icon="@drawable/quit_game" />
